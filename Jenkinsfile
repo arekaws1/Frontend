@@ -1,4 +1,4 @@
-def imageName="arekaws1/backend"
+def imageName="arekaws1/frontend"
 def dockerRegistry=""
 def registryCredentials="dockerhub"
 def dockerTag=""
