@@ -55,7 +55,21 @@ pipeline {
                 }
             }
         }
-    }
+        stage ('Push to Repo') {
+		    steps {
+			dir('ArgoCD') {
+				withCredentials([gitUsernamePassword(credentialsId: 'git', gitToolName: 'Default')]) {
+					git branch: 'main', url: 'https://github.com/arekaws1/ArgoCD.git'
+					sh """ cd frontend
+					sed -i "s#$imageName.*#$imageName:$dockerTag#g" deployment.yaml
+					git commit -am "Set new $dockerTag tag."
+					git push origin main
+					"""
+				}
+		  }
+		  }
+	   }
+    }        
     post {
         always {
             junit testResults: "test-results/*.xml"
